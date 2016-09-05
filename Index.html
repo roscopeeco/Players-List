@@ -1,0 +1,201 @@
+<!doctype html>
+	<html>
+	<head>
+		<link rel="stylesheet" href="css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="css/PlayersList.css"/>
+	</head>
+	<body data-bind="with:playersList">
+		<div class="container">
+			<div class="row">
+				<header class="jumbotron">
+					<h1 class="text-center" >PLAYERS LIST</h1>
+					<div class="row">
+						<div class="col col-sm-hidden col-md-3 col-lg-3 col-xl-4">
+						</div>
+						<div class="col col-sm-12 col-md-6 col-lg-6 col-xl-4">
+							<input id="search" class="form-control" data-bind="textInput:filterValue" type="search" placeholder="Enter your filter" name="search"/>
+						</div>
+						<div class="col col-sm-hidden col-md-3 col-lg-3 col-xl-4">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col col-sm-hidden col-md-3 col-lg-3 col-xl-4">
+						</div>
+						<div class="col col-sm-12 col-md-6 col-lg-6 col-xl-4">
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon1">Sort By</span>
+								<div class="input-group-btn" data-bind="foreach:sort.keys">
+									<button data-bind="text:label, click:$parent.sort.sort, css:selectedCSS" type="button" class="btn btn-sort btn-secondary" selected></button>
+								</div>
+							</div>
+						</div>
+						<div class="col col-sm-hidden col-md-3 col-lg-3 col-xl-4">
+						</div>
+					</div>
+				</header>
+				<ul class="playerslist card-group" data-bind="foreach:players">
+					<li class="card col-sm-6 col-md-6 col-lg-4 col-xl-3" data-bind="click:$parent.toggleSelection,visible:show">
+						<div class="card-block text-xs-center">
+							<h4 data-bind="text:display_name" class="card-title" class="card-header"></h4>
+						</div>
+						<div class="card-image-block">
+							<img data-bind="attr:{src:image}" />
+						</div>
+						<div class="card-block text-xs-center">
+							 <button class="btn btn-secondary" data-bind="click:$parent.viewPlayer">View</button>
+							 <button class="btn btn-secondary" data-bind="click:$parent.editPlayer">Edit</button>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="container-fluid footer" data-bind="visible:isDataAvailable">
+			<div class="row">
+				<footer class="col-xs-12 text-xs-center">
+					<button data-bind="visible:isDataAvailable() && !loading(), click:getViaUserRequest" class="btn btn-secondary">More Players Available</button>
+					<div class="loading" data-bind="visible:loading">
+						<img src="images/hourglass.gif" alt="Loading image" />loading players
+					</div>
+				</footer>
+			</div>
+		</div>
+		<div class="modal fade" id="playerViewModal" tabindex="-1" role="dialog" aria-labelledby="playerViewModal" aria-hidden="true">
+			<div class="modal-dialog" role="document" data-bind="if:isViewModalVisible">
+				<div class="modal-content" data-bind="with:getActivePlayer">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" data-bind="text:display_name"></h4>
+					</div>
+					<div class="modal-body">
+						<div class="card">
+							<img data-bind="attr:{src:image}" class="card-img-top" alt="Card image cap" />
+							<div class="card-block text-xs-center">
+								<table class="table" width="100%">
+									<caption data-bind="text:units.points.display_name"></caption>
+									<thead>
+										<tr>
+											<th width="20%">All</th>
+											<th width="20%">Year</th>
+											<th width="20%">Month</th>
+											<th width="20%">Week</th>
+											<th width="20%">Day</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td width="20%" data-bind="text:units.points.all"></td>
+											<td width="20%" data-bind="text:units.points.year"></td>
+											<td width="20%" data-bind="text:units.points.month" ></td>
+											<td width="20%" data-bind="text:units.points.week"></td>
+											<td width="20%" data-bind="text:units.points.day"></td>
+										</tr>
+									</tbody>
+								</table>								
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="playerEditModal" tabindex="-1" role="dialog" aria-labelledby="playerEditModal" aria-hidden="true">
+			<div class="modal-dialog" role="document" data-bind="if:isEditModalVisible">
+				<div class="modal-content" data-bind="with:editablePlayer">
+					<form id="playerEditForm">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title"><input id="display_name" data-bind="textInput:display_name"  class="form-control" type="text" required /></h4>
+						</div>
+						<div class="modal-body">
+							<div class="card">
+								<img data-bind="attr:{src:image}" class="card-img-top" alt="Card image cap" />
+								<div class="card-block text-xs-center">
+									<table class="table" width="100%">
+										<caption data-bind="text:units.points.display_name"></caption>
+										<thead>
+											<tr>
+												<th width="20%">All</th>
+												<th width="20%">Year</th>
+												<th width="20%">Month</th>
+												<th width="20%">Week</th>
+												<th width="20%">Day</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td width="20%"><input data-bind="textInput:units.points.all" class="form-control" type="number" min="0" required /></td>
+												<td width="20%"><input data-bind="textInput:units.points.year" class="form-control" type="number" min="0" required /></td>
+												<td width="20%"><input data-bind="textInput:units.points.month" class="form-control" type="number"  min="0" /></td>
+												<td width="20%"><input data-bind="textInput:units.points.week" class="form-control" type="number"  min="0" /></td>
+												<td width="20%"><input data-bind="textInput:units.points.day" class="form-control" type="number"  min="0" /></td>
+											</tr>
+										</tbody>
+									</table>
+									<div data-bind="validationMessage:display_name" class="alert alert-danger" role="alert">
+									</div>
+									<div data-bind="validationMessage:units.points.all" class="alert alert-danger" role="alert">
+									</div>
+									<div data-bind="validationMessage:units.points.year" class="alert alert-danger" role="alert">
+									</div>
+									<div data-bind="validationMessage:units.points.month" class="alert alert-danger" role="alert">
+									</div>
+									<div data-bind="validationMessage:units.points.week" class="alert alert-danger" role="alert">
+									</div>
+									<div data-bind="validationMessage:units.points.day" class="alert alert-danger" role="alert">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<div class="saving" data-bind="visible:$parent.saving">
+								<img src="images/hourglass.gif" alt="Loading image" />Saving player record
+							</div>
+							<button type="button" class="btn btn-secondary" data-bind="disable:!$root.playersList.isValid(), click:$parent.save">Save</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+		<script type="text/javascript" src="js/tether.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/knockout.min.js"></script>
+		<script type="text/javascript" src="js/knockout.validation.js"></script>
+		<script type = "text/javascript">
+		
+			var CLICKTOOLS={
+				viewModels:{}
+			};
+
+			window.onload=function() {
+			
+				ko.validation.init( 
+					{ 
+						insertMessages:true,
+						messagesOnModified: true,
+						decorateInputElement:true,
+						errorClass:'has-error',
+						grouping: {
+							deep: true,
+							live: true,
+							observable: true
+						}
+					} 
+				);
+
+				CLICKTOOLS.viewModels.playersList=ko.validatedObservable(new CLICKTOOLS.PlayersList());
+/*				CLICKTOOLS.viewModels.playersList=new CLICKTOOLS.PlayersList();*/
+				ko.applyBindings(CLICKTOOLS.viewModels);
+			};
+				
+		</script>
+		<script type="text/javascript" src="js/PlayersList.js"></script>
+	</body>
+</html>

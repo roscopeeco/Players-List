@@ -1,0 +1,145 @@
+.card img
+{
+	width:100%;
+}
+
+.playerslist .card img
+{
+    position: absolute;
+    top: 0px;
+}
+
+.playerslist .card-image-block 
+{
+	height: 0px;
+	padding-top: 100%;
+	position: relative;
+	width: 100%;
+}
+
+.jumbotron
+{
+	margin:1.25rem 0rem;
+	padding:2rem;
+	border-radius:0px;
+	border: 1px solid rgba(0, 0, 0, 0.125);
+	background-color:#fff;
+}
+
+.jumbotron h1
+{
+	margin-bottom:2rem;	
+}
+
+h1
+{
+	text-align:center;
+}
+
+ul
+{
+	padding-left:0px;
+}
+
+li.card
+{
+	padding:0px;
+}
+
+ .card table caption
+{
+	caption-side:top;
+}
+
+.table td, .table th
+{
+	padding:0.25rem;
+}
+
+.container-fluid.footer
+{
+	position:fixed;
+	bottom:0px;
+	background-color:#fff;
+	width:100%;
+	padding:1rem;
+	border:1px solid #cccccc;
+
+}
+
+.modal-title input
+{
+	width:95%;
+	padding:0px 0.5rem;
+	font-size:1.75rem;
+}
+
+#search
+{
+	margin-bottom:2rem;	
+}
+
+.table input 
+{
+	text-align: center;
+	width: 6em;
+}
+
+.btn-sort.btn-secondary.selected,
+.btn-sort.btn-secondary:hover,
+.btn-sort.btn-secondary:focus
+{
+	background-color:#343434;
+	color:#fff;
+}
+
+.saving img,
+.loading img
+{
+	height:3rem;
+}
+
+	
+.saving
+{
+	display:inline-block;
+	float:left;
+}
+
+@media screen and (max-width: 600px)
+{
+	.table input 
+	{
+		width: 5em;
+		padding: 0.5rem;
+	}	
+	
+	.table td, .table th 
+	{
+		padding: 0.10rem;
+	};
+}
+
+@media screen and (max-width: 500px)
+{
+	.table input 
+	{
+		width: 4em;
+	}	
+	
+}
+
+@media screen and (max-width: 400px)
+{
+	.table input 
+	{
+		width: 3em;
+		padding: 0.25rem;
+	}	
+	
+	.card-block
+	{
+		padding: 1.25rem 0.5rem;
+	}
+
+}
